@@ -1,5 +1,7 @@
 <?php
 
+require_once("UserDetails.php");
+
 class LoginView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
@@ -9,7 +11,7 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-
+	private static $databaseFile = "\\view" . "\database.txt";
 	
 
 	/**
@@ -20,7 +22,11 @@ class LoginView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function response() {
-		$message = '';
+		$message = "";
+
+		if(count($_POST) !== 0) {
+			$message .= $this->controlLoginInfo();
+		}
 		
 		$response = $this->generateLoginFormHTML($message);
 		//$response .= $this->generateLogoutButtonHTML($message);
@@ -66,6 +72,26 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	private function getDatabaseInfo() {
+
+		$fileData = file_get_contents(getcwd() . self::$databaseFile, "r");
+
+		$readableFileData = unserialize($fileData);
+
+		return $readableFileData;
+	}
+
+	private function controlLoginInfo() {
+		if($_POST[self::$name] === "") {
+			return "Username is missing";
+		}
+		if($_POST[self::$password] === "") {
+			return "Password is missing";
+		}
+
+		//ADD STUFF HERE TO CHECK LOGIN INFO
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
