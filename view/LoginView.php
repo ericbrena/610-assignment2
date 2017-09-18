@@ -11,7 +11,7 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-	private static $databaseFile = "\\view" . "\database.txt";
+	private static $databaseFile = __DIR__ . "/database.txt";
 	
 
 	/**
@@ -24,8 +24,16 @@ class LoginView {
 	public function response() {
 		$message = "";
 
+		//if user submits a form this conditional will be true
 		if(count($_POST) !== 0) {
-			$message .= $this->controlLoginInfo();
+
+
+			$loginResult = $this->controlLoginInfo();
+
+			//if authentication is not valid, add error message
+			if($loginResult !== "") {
+				$message .= $loginResult;
+			}
 		}
 		
 		$response = $this->generateLoginFormHTML($message);
@@ -60,7 +68,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="Kallekapten" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -74,16 +82,29 @@ class LoginView {
 		';
 	}
 
-	private function getDatabaseInfo() {
+	/**
+	* Reads from the database, which is a txt file
+	* IMPORTANT! this is not a permament way to handle database, only a temporary solution to assignment
+	* @return array, the array contains UserDetails classes
+	*/
+	private function getReadableDatabaseInfo() {
 
-		$fileData = file_get_contents(getcwd() . self::$databaseFile, "r");
+		//reads from txt file
+		$fileData = file_get_contents(self::$databaseFile, FILE_USE_INCLUDE_PATH);
 
+		//make it a readable array containing UserDetails classes
 		$readableFileData = unserialize($fileData);
 
 		return $readableFileData;
 	}
 
+	/**
+	* Controls users authentication form
+	* @return string, Empty if there were no error authenticating!
+	*/
 	private function controlLoginInfo() {
+
+		//controls the inputs are filled in
 		if($_POST[self::$name] === "") {
 			return "Username is missing";
 		}
@@ -91,7 +112,16 @@ class LoginView {
 			return "Password is missing";
 		}
 
-		//ADD STUFF HERE TO CHECK LOGIN INFO
+		$fileData = $this->getReadableDatabaseInfo();
+		
+		//iterate for a match, return empty string if found
+		for($i = 0; $i < count($fileData); $i++) {
+			if($_POST[self::$name] === $fileData[$i]->name && $_POST[self::$password] === $fileData[$i]->password) {
+				return "";
+			}
+		}
+
+		return "Wrong name or password";
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES

@@ -4,7 +4,7 @@ class UserDetails {
     public $name;
     public $password;
 
-    public function construct(string $name, string $password) {
+    public function __construct(string $name, string $password) {
         $this->name = $name;
         $this->password = $password;
     }
