@@ -1,6 +1,6 @@
 <?php
 
-class UserDetails {
+class UserProfile {
     public $name;
     public $password;
 

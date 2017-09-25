@@ -1,1 +1,0 @@
-a:1:{i:0;O:11:"UserDetails":2:{s:4:"name";s:11:"Kallekapten";s:8:"password";s:9:"runeraket";}}

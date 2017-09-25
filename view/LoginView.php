@@ -1,6 +1,6 @@
 <?php
 
-require_once("UserDetails.php");
+require_once("controller/Authentication.php");
 
 class LoginView {
 	private static $login = 'LoginView::Login';
@@ -11,7 +11,12 @@ class LoginView {
 	private static $cookiePassword = 'LoginView::CookiePassword';
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
-	private static $databaseFile = __DIR__ . "/database.txt";
+
+	private $authentication;
+
+	public function __construct() {
+		$this->authentication = new Authentication();
+	}
 	
 
 	/**
@@ -23,21 +28,23 @@ class LoginView {
 	 */
 	public function response() {
 		$message = "";
+		$response;
 
 		//if user submits a form this conditional will be true
-		if(count($_POST) !== 0) {
-
-
-			$loginResult = $this->controlLoginInfo();
-
-			//if authentication is not valid, add error message
-			if($loginResult !== "") {
-				$message .= $loginResult;
-			}
+		if(isset($_REQUEST[self::$login])) {
+			$message .= $this->authentication->controlLoginInput();
+		} else if(isset($_REQUEST[self::$logout])) {
+			$this->authentication->logout();
+			$message .= "Bye bye!";
 		}
+
+		//$message = $_SESSION["SessionId::Status"] = false;
 		
-		$response = $this->generateLoginFormHTML($message);
-		//$response .= $this->generateLogoutButtonHTML($message);
+		if($this->authentication->getUsersLoginStatus()) {
+			$response = $this->generateLogoutButtonHTML($message);
+		} else {
+			$response = $this->generateLoginFormHTML($message);
+		}
 		return $response;
 	}
 
@@ -62,7 +69,7 @@ class LoginView {
 	*/
 	private function generateLoginFormHTML($message) {
 		return '
-			<form method="post" > 
+			<form method="post" >
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
 					<p id="' . self::$messageId . '">' . $message . '</p>
@@ -80,48 +87,6 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
-	}
-
-	/**
-	* Reads from the database, which is a txt file
-	* IMPORTANT! this is not a permament way to handle database, only a temporary solution to assignment
-	* @return array, the array contains UserDetails classes
-	*/
-	private function getReadableDatabaseInfo() {
-
-		//reads from txt file
-		$fileData = file_get_contents(self::$databaseFile, FILE_USE_INCLUDE_PATH);
-
-		//make it a readable array containing UserDetails classes
-		$readableFileData = unserialize($fileData);
-
-		return $readableFileData;
-	}
-
-	/**
-	* Controls users authentication form
-	* @return string, Empty if there were no error authenticating!
-	*/
-	private function controlLoginInfo() {
-
-		//controls the inputs are filled in
-		if($_POST[self::$name] === "") {
-			return "Username is missing";
-		}
-		if($_POST[self::$password] === "") {
-			return "Password is missing";
-		}
-
-		$fileData = $this->getReadableDatabaseInfo();
-		
-		//iterate for a match, return empty string if found
-		for($i = 0; $i < count($fileData); $i++) {
-			if($_POST[self::$name] === $fileData[$i]->name && $_POST[self::$password] === $fileData[$i]->password) {
-				return "";
-			}
-		}
-
-		return "Wrong name or password";
 	}
 	
 	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
