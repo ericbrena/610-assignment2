@@ -20,7 +20,7 @@ class BodyView {
 	private static $register = "RegisterView::Register";
 	private static $registerMessageId = "RegisterView::Message";
 
-	private static $url = "http://eb223fz.000webhostapp.com/";
+	private static $url = "http://eb223fz.000webhostapp.com";
 
 	private $authentication;
 

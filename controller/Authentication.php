@@ -9,7 +9,7 @@ class Authentication {
 	private static $password = 'LoginView::Password';
 
     private static $databaseFile = "model/database.txt";
-	private static $url = "http://eb223fz.000webhostapp.com/";
+	private static $url = "http://eb223fz.000webhostapp.com";
 
     /**
 	* Reads from the database, which is a txt file
@@ -157,7 +157,7 @@ class Authentication {
             $this->addRegisterToDatabase($name, $password);
             header('Location: ' . self::$url);
         } 
-        else {
+        else if($message === "") {
             $message .= "User exists, pick another username.";
         }
 
