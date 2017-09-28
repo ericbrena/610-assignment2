@@ -3,10 +3,9 @@
 require_once("model/UserProfile.php");
 
 class Authentication {
-	private static $name = 'LoginView::UserName';
-	private static $password = 'LoginView::Password';
 	private static $logout = 'LoginView::Logout';
-    private static $sessionId = "SessionId::Status";
+    private static $sessionId = "Session::Status";
+
     private static $databaseFile = "model/database.txt";
 
     /**
@@ -25,25 +24,28 @@ class Authentication {
         return $readableFileData;
     }
 
-    public function attemptAuthenticate() {
+    public function attemptAuthenticate($name, $password) {
 
-        if(isset($_POST[self::$name]) && isset($_POST[self::$password])) {
+        if(isset($_POST[$name]) && isset($_POST[$password])) {
             $fileData = $this->getReadableDatabaseInfo();
         
             //iterate for a match, return empty string if found
             for($i = 0; $i < count($fileData); $i++) {
-                if($_POST[self::$name] === $fileData[$i]->name && $_POST[self::$password] === $fileData[$i]->password) {
+                if($_POST[$name] === $fileData[$i]->name && $_POST[$password] === $fileData[$i]->password) {
 
                     $_SESSION[self::$sessionId] = true;
 
-                    return TRUE;
+                    return true;
                 }
             }
         }
-        return FALSE;
+        return false;
     }
 
     public function getUsersLoginStatus() {
+        if(isset($_SESSION[self::$sessionId]) === false) {
+            $_SESSION[self::$sessionId] = false;
+        }
         return $_SESSION[self::$sessionId];
     }
 
@@ -52,24 +54,37 @@ class Authentication {
     }
 
     /**
-	* Controls users authentication form
-	* @return string, Empty if there were no error authenticating!
+	* Controls users login form
+	* @return string
 	*/
-    public function controlLoginInput() {
+    public function controlLoginInput($name, $password) {
         
         //controls the inputs filled in
-        if($_POST[self::$name] === "") {
+        if($_POST[$name] === "") {
             return "Username is missing";
         }
-        if($_POST[self::$password] === "") {
+
+        if($_POST[$password] === "") {
             return "Password is missing";
         }
         
-        if($this->attemptAuthenticate()) {
+        if($this->attemptAuthenticate($name, $password)) {
             return "Welcome";
         }
         
         return "Wrong name or password";
+    }
+
+    public function controlRegisterInput($name, $password) {
+        $message = "";
+        if(strlen($_POST[$name]) < 3) {
+            $message .= " Username has too few characters, at least 3 characters.";
+        }
+
+        if(strlen($_POST[$password]) < 6) {
+            $message .= " Password has too few characters, at least 6 characters.";
+        }
+        return $message;
     }
 
     public function logout() {

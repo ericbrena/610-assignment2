@@ -12,6 +12,14 @@ class LoginView {
 	private static $keep = 'LoginView::KeepMeLoggedIn';
 	private static $messageId = 'LoginView::Message';
 
+	private static $registerName = "RegisterView::UserName";
+	private static $registerPassword = "RegisterView::Password";
+	private static $registerPasswordRepeat = "RegisterView::PasswordRepeat";
+	private static $register = "RegisterView::Register";
+	private static $registerMessageId = "RegisterView::Message";
+
+	private static $url = "http://localhost:8080";
+
 	private $authentication;
 
 	public function __construct() {
@@ -30,20 +38,30 @@ class LoginView {
 		$message = "";
 		$response;
 
-		//if user submits a form this conditional will be true
+		//controls what request user is sending and modify message based on it
 		if(isset($_REQUEST[self::$login])) {
-			$message .= $this->authentication->controlLoginInput();
-		} else if(isset($_REQUEST[self::$logout])) {
-			$this->authentication->logout();
+			$message .= $this->authentication->controlLoginInput(self::$name, self::$password);
+		} 
+		else if (isset($_REQUEST[self::$register])) {
+			$message .= $this->authentication->controlRegisterInput(self::$registerName, self::$registerPassword);
+		} 
+		else if(isset($_REQUEST[self::$logout])) {
 			$message .= "Bye bye!";
 		}
 
-		//$message = $_SESSION["SessionId::Status"] = false;
+		if(substr($_SERVER['REQUEST_URI'], 0, 10) === "/?register") {
+			$response = $this->generateRegisterForm($message);
+			$response .= $this->generateHomePageLink();
+		} 
+		else {
 		
-		if($this->authentication->getUsersLoginStatus()) {
-			$response = $this->generateLogoutButtonHTML($message);
-		} else {
-			$response = $this->generateLoginFormHTML($message);
+			if($this->authentication->getUsersLoginStatus()) {
+				$response = $this->generateLogoutButtonHTML($message);
+			} 
+			else {
+				$response = $this->generateLoginFormHTML($message);
+				$response .= $this->generateRegisterLink();
+			}
 		}
 		return $response;
 	}
@@ -88,10 +106,35 @@ class LoginView {
 			</form>
 		';
 	}
-	
-	//CREATE GET-FUNCTIONS TO FETCH REQUEST VARIABLES
-	private function getRequestUserName() {
-		//RETURN REQUEST VARIABLE: USERNAME
+
+	private function generateRegisterForm($message) {
+		return '
+			<form method="post" >
+				<fieldset>
+					<legend>Register</legend>
+					<p id="' . self::$registerMessageId . '">' . $message . '</p>
+				
+					<label for="' . self::$registerName . '">Username :</label>
+					<input type="text" id="' . self::$registerName . '" name="' . self::$registerName . '" />
+
+					<label for="' . self::$registerPassword . '">Password :</label>
+					<input type="password" id="' . self::$registerPassword . '" name="' . self::$registerPassword . '" />
+			
+					<label for="' . self::$registerPasswordRepeat . '">Repeat password :</label>
+					<input type="password" id="' . self::$registerPasswordRepeat . '" name="' . self::$registerPasswordRepeat . '" />
+				
+					<input type="submit" name="' . self::$register . '" value="register" />
+				</fieldset>
+			</form>
+		';
+	}
+
+	private function generateHomePageLink() {
+		return '<a href="' . self::$url . '" name="Back to login">Back to login</a>';
+	}
+
+	private function generateRegisterLink() {
+		return '<a href="' . self::$url . '/?register" name="Register">Register a new user</a>';
 	}
 	
 }

@@ -24,7 +24,7 @@ if($authentication->attemptLogout()) {
     $authentication->logout();
     $userStatus = false;
 }else if($authentication->getUsersLoginStatus() === false) {
-    $userStatus = $authentication->attemptAuthenticate();
+    $userStatus = $authentication->attemptAuthenticate('LoginView::UserName', 'LoginView::Password');
 }
 
 $lv->render($userStatus, $v, $dtv);
