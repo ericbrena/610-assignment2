@@ -2,10 +2,11 @@
 
 require_once("controller/Authentication.php");
 
-class LoginView {
+class BodyView {
 	private static $login = 'LoginView::Login';
 	private static $logout = 'LoginView::Logout';
 	private static $name = 'LoginView::UserName';
+	private static $savedName = "LoginView::SavedUserName";
 	private static $password = 'LoginView::Password';
 	private static $cookieName = 'LoginView::CookieName';
 	private static $cookiePassword = 'LoginView::CookiePassword';
@@ -13,6 +14,7 @@ class LoginView {
 	private static $messageId = 'LoginView::Message';
 
 	private static $registerName = "RegisterView::UserName";
+	private static $savedRegisteredName = "RegisterView::SavedUserName";
 	private static $registerPassword = "RegisterView::Password";
 	private static $registerPasswordRepeat = "RegisterView::PasswordRepeat";
 	private static $register = "RegisterView::Register";
@@ -38,23 +40,25 @@ class LoginView {
 		$message = "";
 		$response;
 
-		//controls what request user is sending and modify message based on it
+		//based on request add message based on control of inputs
 		if(isset($_REQUEST[self::$login])) {
 			$message .= $this->authentication->controlLoginInput(self::$name, self::$password);
 		} 
 		else if (isset($_REQUEST[self::$register])) {
-			$message .= $this->authentication->controlRegisterInput(self::$registerName, self::$registerPassword);
+			$message .= $this->authentication->controlRegisterInput(self::$registerName, self::$registerPassword, self::$registerPasswordRepeat);
 		} 
 		else if(isset($_REQUEST[self::$logout])) {
 			$message .= "Bye bye!";
 		}
 
+		//reads url tag to determine if user is on login or register request
 		if(substr($_SERVER['REQUEST_URI'], 0, 10) === "/?register") {
-			$response = $this->generateRegisterForm($message);
+			$response = $this->generateRegisterFormHTML($message);
 			$response .= $this->generateHomePageLink();
 		} 
 		else {
 		
+			//generate html based on if user is logged in or not
 			if($this->authentication->getUsersLoginStatus()) {
 				$response = $this->generateLogoutButtonHTML($message);
 			} 
@@ -93,7 +97,7 @@ class LoginView {
 					<p id="' . self::$messageId . '">' . $message . '</p>
 					
 					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="Kallekapten" />
+					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->tryAddSavedInfo(self::$name) . '" />
 
 					<label for="' . self::$password . '">Password :</label>
 					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
@@ -107,7 +111,12 @@ class LoginView {
 		';
 	}
 
-	private function generateRegisterForm($message) {
+	/**
+	* Generate HTML code for the register form
+	* @param $message, String output message
+	* @return  void, BUT writes to standard output!
+	*/
+	private function generateRegisterFormHTML($message) {
 		return '
 			<form method="post" >
 				<fieldset>
@@ -115,7 +124,7 @@ class LoginView {
 					<p id="' . self::$registerMessageId . '">' . $message . '</p>
 				
 					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" id="' . self::$registerName . '" name="' . self::$registerName . '" />
+					<input type="text" id="' . self::$registerName . '" name="' . self::$registerName . '" value="' . $this->tryAddSavedInfo(self::$registerName) . '" />
 
 					<label for="' . self::$registerPassword . '">Password :</label>
 					<input type="password" id="' . self::$registerPassword . '" name="' . self::$registerPassword . '" />
@@ -127,6 +136,19 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
+	}
+
+	/**
+	* It will see if any saved sessions exist of name, if add to message
+	* IMPORTANT! It assumes the session contains a string
+	* @return string
+	*/
+	private function tryAddSavedInfo($id) {
+		$message = "";
+		if(isset($_SESSION[$id])) {
+			$message = $_SESSION[$id];
+		}
+		return $message;
 	}
 
 	private function generateHomePageLink() {
