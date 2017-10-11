@@ -13,7 +13,7 @@ class SessionHandler {
         return true;
     }
 
-    public function logInUser() {
+    public function loginUser() {
         $_SESSION[self::sessionID] === true;
     }
 

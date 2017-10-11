@@ -22,4 +22,7 @@ class ConstNames {
 	const register = "RegisterView::Register";
 	const registerMessageId = "RegisterView::Message";
 
+	//pages
+	const registerPage = "/?register";
+
 }

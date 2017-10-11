@@ -7,10 +7,6 @@ class ControlUserInput {
         return $this->message;
     }
 
-    /**
-	* Controls users login form
-	* @return string
-	*/
     public function controlLoginInput() {
         $message = "";
 
@@ -21,26 +17,21 @@ class ControlUserInput {
         if($_POST[self::$password] === "") {
             $message = "Password is missing";
         }
-        
         if($this->attemptAuthenticate(self::$name, self::$password)) {
             $message = "Welcome";
-        }
 
+            return true;
+        }
         if($message === "") {
             $message = "Wrong name or password";
         }
 
         $this->message = $message;
+        return false;
     }
 
-    /**
-    * Controls users register form
-    * @return string, containing message of the result of control
-    */
     public function controlRegisterInput($name, $password, $passwordRepeat) {
         $message = "";
-
-        $_SESSION[$name] = filter_var($_POST[$name], FILTER_SANITIZE_STRING);
 
         //controls correct input 
         if(strlen($_POST[$name]) < 3) {
@@ -54,8 +45,8 @@ class ControlUserInput {
         }
 
         //control for string with bad characters
-        $controlledName = $this->controlPostString($name);
-        $controlledPassword = $this->controlPostString($password);
+        $controlledName = $this->controlString($name);
+        $controlledPassword = $this->controlString($password);
         if($controlledName === false) {
             $message .= "Username contains invalid characters.";
         } 
@@ -64,20 +55,20 @@ class ControlUserInput {
         }
         //if no errors above it will compare request to database
         else if($message === "" && $this->compareRegisterToDatabase($name)) {
-            $this->addRegisterToDatabase($name, $password);
-            header('Location: ' . self::$url);
+            return true;
         } 
         else if($message === "") {
             $message .= "User exists, pick another username.";
         }
 
-        return $message;
+        $this->message = $message;
+        return false;
     }
 
     /**
     * Controls post with given id if string with bad characters
     */
-    private function controlPostString($id) {
+    private function controlString($id) {
         $newString = filter_var($_POST[$id], FILTER_SANITIZE_STRING);
         if($newString === $_POST[$id]) {
             return true;

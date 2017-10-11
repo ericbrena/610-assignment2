@@ -10,10 +10,9 @@ class BodyView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
-		$message = "";
-		$response;
-
+	public function generateHTMLbody($message) {
+		$response = generateLoginFormHTML($message);
+		$response .= generateRegisterLink();
 		
 		return $response;
 	}
@@ -23,10 +22,10 @@ class BodyView {
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
 	*/
-	private function generateLogoutButtonHTML($message) {
+	private function generateLogoutButtonHTML() {
 		return '
 			<form  method="post" >
-				<p id="' . self::$messageId . '">' . $message .'</p>
+				<p id="' . self::$messageId . '">Logout</p>
 				<input type="submit" name="' . self::$logout . '" value="logout"/>
 			</form>
 		';
@@ -60,33 +59,6 @@ class BodyView {
 	}
 
 	/**
-	* Generate HTML code for the register form
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
-	private function generateRegisterFormHTML($message) {
-		return '
-			<form method="post" >
-				<fieldset>
-					<legend>Register</legend>
-					<p id="' . self::$registerMessageId . '">' . $message . '</p>
-				
-					<label for="' . self::$registerName . '">Username :</label>
-					<input type="text" id="' . self::$registerName . '" name="' . self::$registerName . '" value="' . $this->tryAddSavedInfo(self::$registerName) . '" />
-
-					<label for="' . self::$registerPassword . '">Password :</label>
-					<input type="password" id="' . self::$registerPassword . '" name="' . self::$registerPassword . '" />
-			
-					<label for="' . self::$registerPasswordRepeat . '">Repeat password :</label>
-					<input type="password" id="' . self::$registerPasswordRepeat . '" name="' . self::$registerPasswordRepeat . '" />
-				
-					<input type="submit" name="' . self::$register . '" value="register" />
-				</fieldset>
-			</form>
-		';
-	}
-
-	/**
 	* It will see if any saved sessions exist of name, if add to message
 	* IMPORTANT! It assumes the session contains a string
 	* @return string
@@ -100,7 +72,7 @@ class BodyView {
 	}
 
 	private function generateRegisterLink() {
-		return '<a href="' . self::$url . '/?register" name="Register">Register a new user</a>';
+		return '<a href="' . self::$url . self::$registerPage . '" name="Register">Register a new user</a>';
 	}
 	
 }

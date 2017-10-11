@@ -8,10 +8,9 @@ class RegisterView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function response() {
-		$message = "";
-		$response;
-
+	public function generateHTMLbody($message) {
+        $response = $this->generateRegisterFormHTML($message);
+        $response .= $this->generateHomePageLink();
 		
 		return $response;
     }
