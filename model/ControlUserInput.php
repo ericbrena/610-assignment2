@@ -1,28 +1,36 @@
 <?php
 
 class ControlUserInput {
+    private $message;
+
+    public function getControlledMessage() {
+        return $this->message;
+    }
+
     /**
 	* Controls users login form
 	* @return string
 	*/
     public function controlLoginInput() {
-        
-        //saves users log in info to print to username input
-        $_SESSION[self::$name] = $_POST[self::$name];
+        $message = "";
 
         //controls the inputs filled in
         if($_POST[self::$name] === "") {
-            return "Username is missing";
+            $message = "Username is missing";
         }
         if($_POST[self::$password] === "") {
-            return "Password is missing";
+            $message = "Password is missing";
         }
         
         if($this->attemptAuthenticate(self::$name, self::$password)) {
-            return "Welcome";
+            $message = "Welcome";
         }
-        
-        return "Wrong name or password";
+
+        if($message === "") {
+            $message = "Wrong name or password";
+        }
+
+        $this->message = $message;
     }
 
     /**

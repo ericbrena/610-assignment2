@@ -6,11 +6,15 @@ class SessionHandler {
     * IMPORTANT! it assumes the sessionid is a boolean and returns the value as a representation to the users login status
     * @return boolean
     */
-    public function getUsersLoginStatus() {
+    public function isUserLoggedIn() {
         if(isset($_SESSION[self::$sessionId]) === false) {
             $_SESSION[self::$sessionId] = false;
         }
-        return $_SESSION[self::$sessionId];
+        return true;
+    }
+
+    public function logInUser() {
+        $_SESSION[self::sessionID] === true;
     }
 
     public function logout() {
