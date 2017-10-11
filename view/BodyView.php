@@ -3,24 +3,6 @@
 require_once("controller/Authentication.php");
 
 class BodyView {
-	private static $login = 'LoginView::Login';
-	private static $logout = 'LoginView::Logout';
-	private static $name = 'LoginView::UserName';
-	private static $savedName = "LoginView::SavedUserName";
-	private static $password = 'LoginView::Password';
-	private static $cookieName = 'LoginView::CookieName';
-	private static $cookiePassword = 'LoginView::CookiePassword';
-	private static $keep = 'LoginView::KeepMeLoggedIn';
-	private static $messageId = 'LoginView::Message';
-
-	private static $registerName = "RegisterView::UserName";
-	private static $savedRegisteredName = "RegisterView::SavedUserName";
-	private static $registerPassword = "RegisterView::Password";
-	private static $registerPasswordRepeat = "RegisterView::PasswordRepeat";
-	private static $register = "RegisterView::Register";
-	private static $registerMessageId = "RegisterView::Message";
-
-	private static $url = "http://eb223fz.000webhostapp.com";
 
 	private $authentication;
 
