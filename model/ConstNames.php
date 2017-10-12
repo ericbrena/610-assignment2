@@ -1,7 +1,7 @@
 <?php
 
 class ConstNames {
-	const url = "http://eb223fz.000webhostapp.com";
+	const url = "http://localhost:8080";
 
 	const LoggedIn = "Session::IsLoggedIn";
 
@@ -23,6 +23,8 @@ class ConstNames {
 	const registerMessageId = "RegisterView::Message";
 
 	//pages
-	const registerPage = "/?register";
+	const registerURL = "/?register";
+
+	const databaseFile = "database.txt";
 
 }

@@ -1,16 +1,18 @@
 <?php
 
+require_once("ConstNames.php");
+
 class RequestHandler {
     public function requestRegisterPage() {
-        return substr($_SERVER['REQUEST_URI'], 0, 10) === self::$registerPage;
+        return substr($_SERVER['REQUEST_URI'], 0, 10) === ConstNames::registerURL;
     }
 
     public function attemptRegister() {
-        return isset($_REQUEST[self::$register]);
+        return isset($_REQUEST[ConstNames::register]);
     }
 
     public function attemptLogin() {
-        return isset($_REQUEST[self::$LogIn]);
+        return isset($_REQUEST[ConstNames::login]);
     }
 
     /**
@@ -18,6 +20,10 @@ class RequestHandler {
     * @return boolean
     */
     public function attemptLogout() {
-        return isset($_REQUEST[self::$logout]);
+        return isset($_REQUEST[ConstNames::logout]);
+    }
+
+    public function getPostRequest($id) {
+        return $_POST[$id];
     }
 }

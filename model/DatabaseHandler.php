@@ -1,5 +1,7 @@
 <?php
 
+require_once("ConstNames.php");
+
 class DatabaseHandler {
     
     /**
@@ -10,7 +12,7 @@ class DatabaseHandler {
     private function getReadableDatabaseInfo() {
         
         //reads from txt file
-        $fileData = file_get_contents(self::$databaseFile, "r");
+        $fileData = file_get_contents(ConstNames::databaseFile, "r");
         
         //make it a readable array
         $readableFileData = unserialize($fileData);
@@ -61,6 +63,6 @@ class DatabaseHandler {
         
         //make the array to a string to add to database
         $fileData = serialize($fileData);
-        file_put_contents(self::$databaseFile, $fileData);
+        file_put_contents(ConstNames::databaseFile, $fileData);
     }
 }

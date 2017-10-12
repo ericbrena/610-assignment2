@@ -1,24 +1,31 @@
 <?php
 
-class ControlUserInput {
-    private $message;
+require_once("DatabaseHandler.php");
 
-    public function getControlledMessage() {
-        return $this->message;
+class ControlUserInput {
+    private $controlResult;
+    private $databaseHandler;
+
+    public function __construct() {
+        $this->databaseHandler = new DatabaseHandler();
     }
 
-    public function controlLoginInput() {
-        $message = "";
+    public function getControlledMessage() {
+        return $this->controlResult;
+    }
 
+    public function controlLoginInput($name, $password) {
+        $message = "";
         //controls the inputs filled in
-        if($_POST[self::$name] === "") {
+        if($name === "") {
             $message = "Username is missing";
         }
-        if($_POST[self::$password] === "") {
+        if($password === "") {
             $message = "Password is missing";
         }
-        if($this->attemptAuthenticate(self::$name, self::$password)) {
+        if($this->databaseHandler->attemptAuthenticate($name, $password)) {
             $message = "Welcome";
+            $this->controlResult = $message;
 
             return true;
         }
@@ -26,7 +33,7 @@ class ControlUserInput {
             $message = "Wrong name or password";
         }
 
-        $this->message = $message;
+        $this->controlResult = $message;
         return false;
     }
 
@@ -34,13 +41,13 @@ class ControlUserInput {
         $message = "";
 
         //controls correct input 
-        if(strlen($_POST[$name]) < 3) {
+        if(strlen($name) < 3) {
             $message .= " Username has too few characters, at least 3 characters.";
         }
-        if(strlen($_POST[$password]) < 6) {
+        if(strlen($password) < 6) {
             $message .= " Password has too few characters, at least 6 characters.";
         }
-        if($message === "" && $_POST[$password] !== $_POST[$passwordRepeat]) {
+        if($message === "" && $password !== $passwordRepeat) {
             $message .= "Passwords do not match.";
         }
 
@@ -55,22 +62,23 @@ class ControlUserInput {
         }
         //if no errors above it will compare request to database
         else if($message === "" && $this->compareRegisterToDatabase($name)) {
+            $this->controlResult = $message;
             return true;
         } 
         else if($message === "") {
             $message .= "User exists, pick another username.";
         }
 
-        $this->message = $message;
+        $this->controlResult = $message;
         return false;
     }
 
     /**
     * Controls post with given id if string with bad characters
     */
-    private function controlString($id) {
-        $newString = filter_var($_POST[$id], FILTER_SANITIZE_STRING);
-        if($newString === $_POST[$id]) {
+    private function controlString($string) {
+        $newString = filter_var($string, FILTER_SANITIZE_STRING);
+        if($newString === $string) {
             return true;
         }
         return false;

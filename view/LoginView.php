@@ -1,8 +1,8 @@
 <?php
 
-class BodyView {
-	
+require_once("model/ConstNames.php");
 
+class LoginView {
 	/**
 	 * Create HTTP response
 	 *
@@ -11,8 +11,8 @@ class BodyView {
 	 * @return  void BUT writes to standard output and cookies!
 	 */
 	public function generateHTMLbody($message) {
-		$response = generateLoginFormHTML($message);
-		$response .= generateRegisterLink();
+		$response = $this->generateLoginFormHTML($message);
+		$response .= $this->generateRegisterLink();
 		
 		return $response;
 	}
@@ -25,8 +25,8 @@ class BodyView {
 	private function generateLogoutButtonHTML() {
 		return '
 			<form  method="post" >
-				<p id="' . self::$messageId . '">Logout</p>
-				<input type="submit" name="' . self::$logout . '" value="logout"/>
+				<p id="' . ConstNames::messageId . '">Logout</p>
+				<input type="submit" name="' . ConstNames::logout . '" value="logout"/>
 			</form>
 		';
 	}
@@ -41,18 +41,18 @@ class BodyView {
 			<form method="post" >
 				<fieldset>
 					<legend>Login - enter Username and password</legend>
-					<p id="' . self::$messageId . '">' . $message . '</p>
+					<p id="' . ConstNames::messageId . '">' . $message . '</p>
 					
-					<label for="' . self::$name . '">Username :</label>
-					<input type="text" id="' . self::$name . '" name="' . self::$name . '" value="' . $this->tryAddSavedInfo(self::$name) . '" />
+					<label for="' . ConstNames::name . '">Username :</label>
+					<input type="text" id="' . ConstNames::name . '" name="' . ConstNames::name . '" value="' . $this->tryAddSavedInfo(ConstNames::name) . '" />
 
-					<label for="' . self::$password . '">Password :</label>
-					<input type="password" id="' . self::$password . '" name="' . self::$password . '" />
+					<label for="' . ConstNames::password . '">Password :</label>
+					<input type="password" id="' . ConstNames::password . '" name="' . ConstNames::password . '" />
 
-					<label for="' . self::$keep . '">Keep me logged in  :</label>
-					<input type="checkbox" id="' . self::$keep . '" name="' . self::$keep . '" />
+					<label for="' . ConstNames::keep . '">Keep me logged in  :</label>
+					<input type="checkbox" id="' . ConstNames::keep . '" name="' . ConstNames::keep . '" />
 					
-					<input type="submit" name="' . self::$login . '" value="login" />
+					<input type="submit" name="' . ConstNames::login . '" value="login" />
 				</fieldset>
 			</form>
 		';
@@ -72,7 +72,7 @@ class BodyView {
 	}
 
 	private function generateRegisterLink() {
-		return '<a href="' . self::$url . self::$registerPage . '" name="Register">Register a new user</a>';
+		return '<a href="' . ConstNames::url . ConstNames::registerURL . '" name="Register">Register a new user</a>';
 	}
 	
 }

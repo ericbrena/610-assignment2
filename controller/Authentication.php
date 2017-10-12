@@ -1,7 +1,7 @@
 <?php
 
 require_once("model/RequestHandler.php");
-require_once("model/SessionHandler.php");
+require_once("model/UserSessionHandler.php");
 require_once("model/ControlUserInput.php");
 require_once("model/DatabaseHandler.php");
 
@@ -19,7 +19,7 @@ class Authentication {
 
     public function __construct() {
         $this->requestHandler = new RequestHandler();
-        $this->sessionHandler = new SessionHandler();
+        $this->sessionHandler = new UserSessionHandler();
         $this->controlUserInput = new ControlUserInput();
         $this->databaseHandler = new DatabaseHandler();
 
@@ -36,7 +36,10 @@ class Authentication {
 
         $userAttemptedLogin = $this->requestHandler->attemptLogin();
         if($userLoggedInStatus === false && $userAttemptedLogin) {
-            $logInResult = $this->controlUserInput->controlLoginInput();
+            $name = $this->requestHandler->getPostRequest(ConstNames::name);
+            $password = $this->requestHandler->getPostRequest(ConstNames::password);
+
+            $logInResult = $this->controlUserInput->controlLoginInput($name, $password);
 
             if($logInResult === true) {
                 $this->sessionHandler->loginUser();
@@ -68,7 +71,9 @@ class Authentication {
         return $HTML;
     }
     
+    public function getLoggedInStatus() {
+        return $this->sessionHandler->isUserLoggedIn();
+    }
 
     
-
 }
