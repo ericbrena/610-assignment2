@@ -9,7 +9,7 @@ require_once("view/LoginView.php");
 require_once("view/LoggedInView.php");
 require_once("view/RegisterView.php");
 
-class Authentication {
+class MainController {
     private $requestHandler;
     private $sessionHandler;
     private $controlUserInput;
@@ -34,6 +34,7 @@ class Authentication {
         $this->handleLogout();
         $this->handleLogin();
         $this->handleRegister();
+        $this->handleGameInput();
     }
     
     public function getHTML() {
@@ -48,7 +49,8 @@ class Authentication {
         }
         else if($userIsLoggedIn === true) {
             $HTML = $this->loggedInView->generateHTMLbody($userMessage);
-        } else {
+        } 
+        else {
             $savedUserName = $this->sessionHandler->tryGetSavedInfo(ConstNames::savedName);
             $HTML = $this->loginView->generateHTMLbody($userMessage, $savedUserName);
         }
@@ -96,6 +98,27 @@ class Authentication {
                 $this->databaseHandler->addRegisterToDatabase($name, $password);
                 $this->sessionHandler->saveInfo(ConstNames::savedName, $name);
                 header('Location: ' . ConstNames::url);
+            }
+        }
+    }
+
+    private function handleGameInput() {
+        if($this->getLoggedInStatus()) {
+
+            $userRequestNewGame = $this->requestHandler->attemptNewGame();
+            if($userRequestNewGame === true) {
+                $this->sessionHandler->setGameActive();
+                $this->sessionHandler->createNewGame();
+            }
+
+            $userRequestUp = $this->requestHandler->attemptUpChoice();
+            if($userIsLoggedIn === true && $userRequestUp === true) {
+                $this->game->moveUp();
+            }
+
+            $userRequestRight = $this->requestHandler->attemptRightChoice();
+            if($userIsLoggedIn === true && $userRequestRight === true) {
+                $this->game->moveRight();
             }
         }
     }

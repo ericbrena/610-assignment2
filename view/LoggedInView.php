@@ -13,6 +13,7 @@ class LoggedInView {
 	 */
 	public function generateHTMLbody($message) {
 		$response = $this->generateLogoutButtonHTML($message);
+		$response .= $this->generateNewGameButtonHTML();
 		
 		return $response;
 	}
@@ -29,6 +30,13 @@ class LoggedInView {
 				<p id="' . ConstNames::messageId . '">'. $message .'</p>
 				<input type="submit" name="' . ConstNames::logout . '" value="logout"/>
 			</form>
+		';
+	}
+
+	private function generateNewGameButtonHTML() {
+		return '
+			<form  method="post" >
+				<input type="submit" name"' . ConstNames::newGame . '" value="new game"/>
 		';
 	}
 }

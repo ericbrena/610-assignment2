@@ -1,11 +1,13 @@
 <?php
 
 class ConstNames {
-	const url = "http://eb223fz.000webhostapp.com";
+	const url = "http://localhost:8080";
 
 	const LoggedIn = "Session::IsLoggedIn";
 	
+	//file paths
 	const databaseFile = "model/database.txt";
+	const gameEditorFile = "model/GameEditor.css";
 
     //loginview
     const login = "LoginView::Login";
@@ -23,6 +25,8 @@ class ConstNames {
 	const registerPasswordRepeat = "RegisterView::PasswordRepeat";
 	const register = "RegisterView::Register";
 	const registerMessageId = "RegisterView::Message";
+
+	const newGame = "GameView::NewGame";
 
 	//pages
 	const registerURL = "/?register";

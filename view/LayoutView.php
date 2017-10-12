@@ -1,5 +1,6 @@
 <?php
 
+require_once("model/ConstNames.php");
 
 class LayoutView {
   
@@ -9,6 +10,9 @@ class LayoutView {
         <head>
           <meta charset="utf-8">
           <title>Login Example</title>
+          <style>
+          '. file_get_contents(ConstNames::gameEditorFile) .'
+          </style>
         </head>
         <body>
           <h1>Assignment 2</h1>
