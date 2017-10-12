@@ -16,8 +16,25 @@ class UserSessionHandler {
         return $_SESSION[ConstNames::LoggedIn];
     }
 
+    /**
+	* It will see if any saved sessions exist of name, if so add to message
+	* IMPORTANT! It assumes the session contains a string
+	* @return string
+	*/
+	public function tryGetSavedInfo($id) {
+		$message = "";
+		if(isset($_SESSION[$id])) {
+			$message = $_SESSION[$id];
+		}
+		return $message;
+    }
+    
+    public function saveInfo($id, $message) {
+        $_SESSION[$id] = $message;
+    }
+
     public function loginUser() {
-        $_SESSION[ConstNames::LoggedIn] === true;
+        $_SESSION[ConstNames::LoggedIn] = true;
     }
 
     public function logout() {

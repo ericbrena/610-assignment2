@@ -1,9 +1,11 @@
 <?php
 
 class ConstNames {
-	const url = "http://localhost:8080";
+	const url = "http://eb223fz.000webhostapp.com";
 
 	const LoggedIn = "Session::IsLoggedIn";
+	
+	const databaseFile = "model/database.txt";
 
     //loginview
     const login = "LoginView::Login";
@@ -24,7 +26,5 @@ class ConstNames {
 
 	//pages
 	const registerURL = "/?register";
-
-	const databaseFile = "database.txt";
 
 }

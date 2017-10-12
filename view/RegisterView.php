@@ -10,8 +10,8 @@ class RegisterView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function generateHTMLbody($message) {
-        $response = $this->generateRegisterFormHTML($message);
+	public function generateHTMLbody($message, $savedUsername) {
+        $response = $this->generateRegisterFormHTML($message, $savedUsername);
         $response .= $this->generateHomePageLink();
 		
 		return $response;
@@ -22,7 +22,7 @@ class RegisterView {
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
 	*/
-	private function generateRegisterFormHTML($message) {
+	private function generateRegisterFormHTML($message, $savedUsername) {
 		return '
 			<form method="post" >
 				<fieldset>
@@ -30,7 +30,7 @@ class RegisterView {
 					<p id="' . ConstNames::registerMessageId . '">' . $message . '</p>
 				
 					<label for="' . ConstNames::registerName . '">Username :</label>
-					<input type="text" id="' . ConstNames::registerName . '" name="' . ConstNames::registerName . '" value="' . $this->tryAddSavedInfo(ConstNames::registerName) . '" />
+					<input type="text" id="' . ConstNames::registerName . '" name="' . ConstNames::registerName . '" value="' . $savedUsername . '" />
 
 					<label for="' . ConstNames::registerPassword . '">Password :</label>
 					<input type="password" id="' . ConstNames::registerPassword . '" name="' . ConstNames::registerPassword . '" />
@@ -47,18 +47,4 @@ class RegisterView {
 	private function generateHomePageLink() {
 		return '<a href="' . ConstNames::url . '" name="Back to login">Back to login</a>';
 	}
-
-	/**
-	* It will see if any saved sessions exist of name, if add to message
-	* IMPORTANT! It assumes the session contains a string
-	* @return string
-	*/
-	private function tryAddSavedInfo($id) {
-		$message = "";
-		if(isset($_SESSION[$id])) {
-			$message = $_SESSION[$id];
-		}
-		return $message;
-	}
-
 }

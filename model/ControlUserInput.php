@@ -20,10 +20,10 @@ class ControlUserInput {
         if($name === "") {
             $message = "Username is missing";
         }
-        if($password === "") {
+        else if($password === "") {
             $message = "Password is missing";
         }
-        if($this->databaseHandler->attemptAuthenticate($name, $password)) {
+        else if($this->databaseHandler->attemptAuthenticate($name, $password)) {
             $message = "Welcome";
             $this->controlResult = $message;
 
@@ -61,7 +61,7 @@ class ControlUserInput {
             $message .= "Password contains invalid characters.";
         }
         //if no errors above it will compare request to database
-        else if($message === "" && $this->compareRegisterToDatabase($name)) {
+        else if($message === "" && $this->databaseHandler->compareRegisterToDatabase($name)) {
             $this->controlResult = $message;
             return true;
         } 
@@ -71,6 +71,10 @@ class ControlUserInput {
 
         $this->controlResult = $message;
         return false;
+    }
+
+    public function userLoggedOut() {
+        $this->controlResult = "Bye!";
     }
 
     /**

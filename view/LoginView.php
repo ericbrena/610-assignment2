@@ -10,33 +10,21 @@ class LoginView {
 	 *
 	 * @return  void BUT writes to standard output and cookies!
 	 */
-	public function generateHTMLbody($message) {
-		$response = $this->generateLoginFormHTML($message);
+	public function generateHTMLbody($message, $savedUsername) {
+		$response = $this->generateLoginFormHTML($message, $savedUsername);
 		$response .= $this->generateRegisterLink();
 		
 		return $response;
 	}
 
-	/**
-	* Generate HTML code on the output buffer for the logout button
-	* @param $message, String output message
-	* @return  void, BUT writes to standard output!
-	*/
-	private function generateLogoutButtonHTML() {
-		return '
-			<form  method="post" >
-				<p id="' . ConstNames::messageId . '">Logout</p>
-				<input type="submit" name="' . ConstNames::logout . '" value="logout"/>
-			</form>
-		';
-	}
+	
 	
 	/**
 	* Generate HTML code on the output buffer for the logout button
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
 	*/
-	private function generateLoginFormHTML($message) {
+	private function generateLoginFormHTML($message, $savedUsername) {
 		return '
 			<form method="post" >
 				<fieldset>
@@ -44,7 +32,7 @@ class LoginView {
 					<p id="' . ConstNames::messageId . '">' . $message . '</p>
 					
 					<label for="' . ConstNames::name . '">Username :</label>
-					<input type="text" id="' . ConstNames::name . '" name="' . ConstNames::name . '" value="' . $this->tryAddSavedInfo(ConstNames::name) . '" />
+					<input type="text" id="' . ConstNames::name . '" name="' . ConstNames::name . '" value="' . $savedUsername . '" />
 
 					<label for="' . ConstNames::password . '">Password :</label>
 					<input type="password" id="' . ConstNames::password . '" name="' . ConstNames::password . '" />
@@ -56,19 +44,6 @@ class LoginView {
 				</fieldset>
 			</form>
 		';
-	}
-
-	/**
-	* It will see if any saved sessions exist of name, if add to message
-	* IMPORTANT! It assumes the session contains a string
-	* @return string
-	*/
-	private function tryAddSavedInfo($id) {
-		$message = "";
-		if(isset($_SESSION[$id])) {
-			$message = $_SESSION[$id];
-		}
-		return $message;
 	}
 
 	private function generateRegisterLink() {
