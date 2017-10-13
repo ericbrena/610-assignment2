@@ -1,16 +1,16 @@
 <?php
 
 class ConstNames {
-	const url = "http://eb223fz.000webhostapp.com";
-
+    	const url = "http://eb223fz.000webhostapp.com";
+    
 	const isLoggedIn = "Session::IsLoggedIn";
 	
 	//file paths
 	const databaseFile = "model/database.txt";
 	const gameEditorFile = "model/GameEditor.css";
 
-    //loginview
-    const login = "LoginView::Login";
+    	//loginview
+    	const login = "LoginView::Login";
 	const logout = "LoginView::Logout";
 	const name = "LoginView::UserName";
 	const savedName = "LoginView::SavedUserName";
@@ -18,7 +18,7 @@ class ConstNames {
 	const keep = "LoginView::KeepMeLoggedIn";
 	const messageId = "LoginView::Message";
 
-    //registerview
+    	//registerview
 	const registerName = "RegisterView::UserName";
 	const savedRegisteredName = "RegisterView::SavedUserName";
 	const registerPassword = "RegisterView::Password";
