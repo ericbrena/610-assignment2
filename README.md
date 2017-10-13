@@ -6,6 +6,7 @@ The game is not entirely finished, it works fine without buggs and will stop if 
 ## How To Install?
 1. download [zipfile](https://github.com/ericbrena/610-assignment2/blob/master/Assignment-2.zip)
 2. extract to webbhotel in root folder or run it on local server by typing: php -S localhost:8080 in your extracted folder.
+3. due note that the file model/ConstNames.php has the url set to localhost:8080, if you wish it to be on another port or on a webbhotel you must change that url.
 
 ## How to test?
 The game is called 2048 and you test it by playing it!<br /> 
