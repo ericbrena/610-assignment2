@@ -3,7 +3,7 @@
 class ConstNames {
 	const url = "http://localhost:8080";
 
-	const LoggedIn = "Session::IsLoggedIn";
+	const isLoggedIn = "Session::IsLoggedIn";
 	
 	//file paths
 	const databaseFile = "model/database.txt";
@@ -29,6 +29,10 @@ class ConstNames {
 	const newGame = "Game::NewGame";
 	const gameActive = "Game::ActiveGame";
 	const gameBoard = "Game::GameInfo";
+	const gameMoveUp = "Game::MoveUp";
+	const gameMoveRight = "Game::MoveRight";
+	const gameMoveDown = "Game::MoveDown";
+	const gameMoveLeft = "Game::MoveLeft";
 
 	//pages
 	const registerURL = "/?register";

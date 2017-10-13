@@ -3,8 +3,8 @@
 class GameView {
     public function generateGameHTML($gameBoard, $userLost) {
         $response = "";
-        if($userLost) {
-            $response .= $this->generateLostMessage();
+        if($userLost === true) {
+            $response .= $this->generateLostMessageHTML();
         }
 
         $response .= $this->gameHTML($gameBoard);
@@ -16,28 +16,28 @@ class GameView {
     private function gameHTML($gameBoard) {
         return '
         <tr>
-            <td>'. $gameInfo[0][0] .'</td>
-            <td>'. $gameInfo[0][1] .'</td>
-            <td>'. $gameInfo[0][2] .'</td>
-            <td>'. $gameInfo[0][3] .'</td>
+            <td>'. $gameBoard[0][0] .'</td>
+            <td>'. $gameBoard[0][1] .'</td>
+            <td>'. $gameBoard[0][2] .'</td>
+            <td>'. $gameBoard[0][3] .'</td>
         </tr>
         <tr>
-            <td>'. $gameInfo[1][0] .'</td>
-            <td>'. $gameInfo[1][1] .'</td>
-            <td>'. $gameInfo[1][2] .'</td>
-            <td>'. $gameInfo[1][3] .'</td>
+            <td>'. $gameBoard[1][0] .'</td>
+            <td>'. $gameBoard[1][1] .'</td>
+            <td>'. $gameBoard[1][2] .'</td>
+            <td>'. $gameBoard[1][3] .'</td>
         </tr>
         <tr>
-            <td>'. $gameInfo[2][0] .'</td>
-            <td>'. $gameInfo[2][1] .'</td>
-            <td>'. $gameInfo[2][2] .'</td>
-            <td>'. $gameInfo[2][3] .'</td>
+            <td>'. $gameBoard[2][0] .'</td>
+            <td>'. $gameBoard[2][1] .'</td>
+            <td>'. $gameBoard[2][2] .'</td>
+            <td>'. $gameBoard[2][3] .'</td>
         </tr>
         <tr>
-            <td>'. $gameInfo[3][0] .'</td>
-            <td>'. $gameInfo[3][1] .'</td>
-            <td>'. $gameInfo[3][2] .'</td>
-            <td>'. $gameInfo[3][3] .'</td>
+            <td>'. $gameBoard[3][0] .'</td>
+            <td>'. $gameBoard[3][1] .'</td>
+            <td>'. $gameBoard[3][2] .'</td>
+            <td>'. $gameBoard[3][3] .'</td>
         </tr>
         ';
     }
@@ -45,17 +45,23 @@ class GameView {
     private function gameButtonsHTML() {
         return '
         <form  method="post" >
-            <input type="submit" name="' . ConstNames::moveUp . '" value="Up"/>
+            <input type="submit" name="' . ConstNames::gameMoveUp . '" value="Up"/>
         </form>
         <form  method="post" >
-            <input type="submit" name="' . ConstNames::moveRight . '" value="Right"/>
+            <input type="submit" name="' . ConstNames::gameMoveRight . '" value="Right"/>
         </form>
         <form  method="post" >
-            <input type="submit" name="' . ConstNames::moveDown . '" value="Down"/>
+            <input type="submit" name="' . ConstNames::gameMoveDown . '" value="Down"/>
         </form>
         <form  method="post" >
-            <input type="submit" name="' . ConstNames::moveLeft . '" value="Left"/>
+            <input type="submit" name="' . ConstNames::gameMoveLeft . '" value="Left"/>
         </form>
+        ';
+    }
+
+    private function generateLostMessageHTML() {
+        return '
+        <p>You Lost!</p>
         ';
     }
 }
