@@ -1,7 +1,7 @@
 <?php
 
 class ConstNames {
-	const url = "http://localhost:8080";
+	const url = "http://eb223fz.000webhostapp.com";
 
 	const isLoggedIn = "Session::IsLoggedIn";
 	
