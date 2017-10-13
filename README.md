@@ -1,2 +1,4 @@
-Course 1DV610 L3
-Interface repository for 1DV608 assignment 2 and 4.
+# Course 1DV610 L3
+
+## How To Install?
+download [zipfile](https://github.com/ericbrena/610-assignment2/blob/master/Assignment-2.zip)
