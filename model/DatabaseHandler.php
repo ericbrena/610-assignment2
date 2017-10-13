@@ -6,10 +6,10 @@ require_once("UserProfile.php");
 class DatabaseHandler {
     
     /**
-	* Reads from the database, which is a txt file
-	* IMPORTANT! this is not a permament way to handle database, only a temporary solution to assignment
-	* @return array, the array contains UserProfile classes
-	*/
+    * Reads from the database, which is a txt file
+    * IMPORTANT! this is not a permament way to handle database, only a temporary solution to assignment
+    * @return array, the array contains UserProfile classes
+    */
     private function getReadableDatabaseInfo() {
         
         //reads from txt file
