@@ -7,6 +7,10 @@ class RequestHandler {
         return substr($_SERVER['REQUEST_URI'], 0, 10) === ConstNames::registerURL;
     }
 
+    public function attemptNewGame() {
+        return isset($_REQUEST[ConstNames::newGame]);
+    }
+
     public function attemptRegister() {
         return isset($_REQUEST[ConstNames::register]);
     }

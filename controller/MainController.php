@@ -125,16 +125,16 @@ class MainController {
 
     private function handleGameInput() {
         if($this->getLoggedInStatus()) {
-
+            $this->gameLogic->createNewGame();
             if($this->requestHandler->attemptNewGame() === true) {
-                $this->sessionHandler->setGameActive();
+                $this->sessionHandler->saveInfo(ConstNames::gameActive, true);
                 $this->sessionHandler->saveInfo(ConstNames::gameBoard, $this->gameLogic->createNewGame());
             }
-
+            
             if($this->sessionHandler->isGameActive() === true) {
                 $gameBoard = $this->sessionHandler->getInfo(ConstNames::gameBoard);
                 $updatedGameBoard;
-
+                
                 if($this->requestHandler->attemptUpChoice() === true) {
                     $updatedGameBoard = $this->gameLogic->moveUp($gameBoard);
                 }

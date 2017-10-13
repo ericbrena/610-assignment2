@@ -3,13 +3,6 @@
 require_once("model/ConstNames.php");
 
 class LoginView {
-	/**
-	 * Create HTTP response
-	 *
-	 * Should be called after a login attempt has been determined
-	 *
-	 * @return  void BUT writes to standard output and cookies!
-	 */
 	public function generateHTMLbody($message, $savedUsername) {
 		$response = $this->generateLoginFormHTML($message, $savedUsername);
 		$response .= $this->generateRegisterLink();

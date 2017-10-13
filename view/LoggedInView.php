@@ -4,13 +4,6 @@ require_once("model/ConstNames.php");
 
 class LoggedInView {
 
-    /**
-	 * Create HTTP response
-	 *
-	 * Should be called after a login attempt has been determined
-	 *
-	 * @return  void BUT writes to standard output and cookies!
-	 */
 	public function generateHTMLbody($message) {
 		$response = $this->generateLogoutButtonHTML($message);
 		$response .= $this->generateNewGameButtonHTML();
@@ -36,7 +29,8 @@ class LoggedInView {
 	private function generateNewGameButtonHTML() {
 		return '
 			<form  method="post" >
-				<input type="submit" name"' . ConstNames::newGame . '" value="new game"/>
+				<input type="submit" name="' . ConstNames::newGame . '" value="new game"/>
+			</form>
 		';
 	}
 }

@@ -40,4 +40,11 @@ class UserSessionHandler {
     public function logout() {
         $_SESSION[ConstNames::LoggedIn] = false;
     }
+
+    public function isGameActive() {
+        if(isset($_SESSION[ConstNames::gameActive]) === false) {
+            $_SESSION[ConstNames::gameActive] = false;
+        }
+        return $_SESSION[ConstNames::gameActive];
+    }
 }

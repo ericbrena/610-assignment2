@@ -8,7 +8,7 @@ class GameView {
         }
 
         $response .= $this->gameHTML($gameBoard);
-        $response .= $this->gameButtons();
+        $response .= $this->gameButtonsHTML();
 		
 		return $response;
     }
@@ -39,6 +39,23 @@ class GameView {
             <td>'. $gameInfo[3][2] .'</td>
             <td>'. $gameInfo[3][3] .'</td>
         </tr>
+        ';
+    }
+
+    private function gameButtonsHTML() {
+        return '
+        <form  method="post" >
+            <input type="submit" name="' . ConstNames::moveUp . '" value="Up"/>
+        </form>
+        <form  method="post" >
+            <input type="submit" name="' . ConstNames::moveRight . '" value="Right"/>
+        </form>
+        <form  method="post" >
+            <input type="submit" name="' . ConstNames::moveDown . '" value="Down"/>
+        </form>
+        <form  method="post" >
+            <input type="submit" name="' . ConstNames::moveLeft . '" value="Left"/>
+        </form>
         ';
     }
 }
