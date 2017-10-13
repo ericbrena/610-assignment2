@@ -26,7 +26,8 @@ class ConstNames {
 	const register = "RegisterView::Register";
 	const registerMessageId = "RegisterView::Message";
 
-	const newGame = "GameView::NewGame";
+	const newGame = "Game::NewGame";
+	const gameBoard = "Game::GameInfo";
 
 	//pages
 	const registerURL = "/?register";

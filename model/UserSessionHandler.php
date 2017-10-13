@@ -21,12 +21,12 @@ class UserSessionHandler {
 	* IMPORTANT! It assumes the session contains a string
 	* @return string
 	*/
-	public function tryGetSavedInfo($id) {
-		$message = "";
+	public function getInfo($id) {
+		$info = "";
 		if(isset($_SESSION[$id])) {
-			$message = $_SESSION[$id];
+			$info = $_SESSION[$id];
 		}
-		return $message;
+		return $info;
     }
     
     public function saveInfo($id, $message) {
