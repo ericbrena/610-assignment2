@@ -3,7 +3,7 @@
 require_once("model/ConstNames.php");
 
 class RegisterView {
-    /**
+         /**
 	 * Create HTTP response
 	 *
 	 * Should be called after a login attempt has been determined
@@ -17,7 +17,7 @@ class RegisterView {
 		return $response;
     }
     
-    /**
+        /**
 	* Generate HTML code for the register form
 	* @param $message, String output message
 	* @return  void, BUT writes to standard output!
