@@ -25,17 +25,38 @@ class GameLogic {
         $copyOfGameBoard = $gameBoard;
 
         //make all moves and attempt createnew number tile for each move
-        //it is impossible for the game to generate same conditions after any sequence of moves
+        //itis impossible for the game to generate same conditions after any sequence of moves
+        //add a new number if there is room
         $copyOfGameBoard = $this->moveUp($copyOfGameBoard);
-        $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        if($this->getAmountEmptyTiles($copyOfGameBoard) > 0) {
+            $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        }
+
         $copyOfGameBoard = $this->moveRight($copyOfGameBoard);
-        $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        if($this->getAmountEmptyTiles($copyOfGameBoard) > 0) {
+            $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        }
+
         $copyOfGameBoard = $this->moveDown($copyOfGameBoard);
-        $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        if($this->getAmountEmptyTiles($copyOfGameBoard) > 0) {
+            $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
+        }
+
         $copyOfGameBoard = $this->moveLeft($copyOfGameBoard);
-        $copyOfGameBoard = $this->generateNewBoard($copyOfGameBoard);
 
         return $this->analyzeBoardChange($gameBoard, $copyOfGameBoard);
+    }
+    
+    public function getAmountEmptyTiles($gameBoard) {
+        $availableTiles = 0;
+        for($x = 0; $x < 4; $x++) {
+            for($y = 0; $y < 4; $y++) {
+                if($gameBoard[$x][$y] === null) {
+                    $availableTiles += 1;
+                }
+            }
+        }
+        return $availableTiles;
     }
 
     /**
