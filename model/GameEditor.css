@@ -2,8 +2,26 @@ table, th, td {
     border: 1px solid black;
 }
 
+table {
+    width: 250px;
+    height: 250px;
+}
+
 td {
-    height: 20px;
-    width: 20px;
+    height: 30px;
+    width: 30px;
     text-align: center;
+    font-size: 25px;
+}
+
+#ButtonWrapper {
+    margin-left: 55px;
+}
+
+#UpperButton {
+    margin-left: 50px;
+}
+
+.LowerButtons {
+    display: inline-block;
 }

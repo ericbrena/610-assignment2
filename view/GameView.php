@@ -1,14 +1,15 @@
 <?php
 
 class GameView {
-    public function generateGameHTML($gameBoard, $userLost) {
+    public function generateGameHTML($gameBoard, $gameNotOver) {
         $response = "";
-        if($userLost === true) {
-            $response .= $this->generateLostMessageHTML();
-        }
-
         $response .= $this->gameHTML($gameBoard);
-        $response .= $this->gameButtonsHTML();
+
+        if($gameNotOver === false) {
+            $response .= $this->generateLostMessageHTML();
+        } else {
+            $response .= $this->gameButtonsHTML();
+        }
 		
 		return $response;
     }
@@ -46,18 +47,22 @@ class GameView {
 
     private function gameButtonsHTML() {
         return '
-        <form  method="post" >
-            <input type="submit" name="' . ConstNames::gameMoveUp . '" value="Up"/>
-        </form>
-        <form  method="post" >
-            <input type="submit" name="' . ConstNames::gameMoveRight . '" value="Right"/>
-        </form>
-        <form  method="post" >
-            <input type="submit" name="' . ConstNames::gameMoveDown . '" value="Down"/>
-        </form>
-        <form  method="post" >
-            <input type="submit" name="' . ConstNames::gameMoveLeft . '" value="Left"/>
-        </form>
+        <div id="'. ConstNames::buttonWrapper .'">
+            <form  method="post" id="'. ConstNames::upperButton .'">
+                <input type="submit" name="' . ConstNames::gameMoveUp . '" value="Up"/>
+            </form>
+            <div>
+            <form  method="post" class="'. ConstNames::lowerButtons .'">
+                <input type="submit" name="' . ConstNames::gameMoveLeft . '" value="Left"/>
+            </form>
+            <form  method="post" class="'. ConstNames::lowerButtons .'">
+                <input type="submit" name="' . ConstNames::gameMoveDown . '" value="Down"/>
+            </form>
+            <form  method="post" class="'. ConstNames::lowerButtons .'">
+                <input type="submit" name="' . ConstNames::gameMoveRight . '" value="Right"/>
+            </form>
+            </div>
+        </div>
         ';
     }
 

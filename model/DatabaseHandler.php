@@ -22,8 +22,8 @@ class DatabaseHandler {
     }
 
     /**
-    * It will compare post name and password to database and set session to true if it found a match
-    * @return boolean
+    * Will compare information give in parameter to database
+    * @return boolean, true if succesful match
     */
     public function attemptAuthenticate($name, $password) {
         $fileData = $this->getReadableDatabaseInfo();
@@ -40,8 +40,8 @@ class DatabaseHandler {
     }
 
     /**
-    * It will compare ONLY name to database and return false if name is occupied
-    * @param id of post
+    * Will compare information give in parameter to database
+    * @return boolean, true if no username found
     */
     public function compareRegisterToDatabase($name) {
         $fileData = $this->getReadableDatabaseInfo();
@@ -58,7 +58,7 @@ class DatabaseHandler {
     }
 
     /**
-    * It will take name and password from post and add them to database
+    * It will take variables from parameter and add them to database
     */
     public function addRegisterToDatabase($name, $password) {
         

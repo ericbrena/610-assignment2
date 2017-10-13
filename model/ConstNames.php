@@ -26,6 +26,7 @@ class ConstNames {
 	const register = "RegisterView::Register";
 	const registerMessageId = "RegisterView::Message";
 
+	//gameview
 	const newGame = "Game::NewGame";
 	const gameActive = "Game::ActiveGame";
 	const gameBoard = "Game::GameInfo";
@@ -33,6 +34,11 @@ class ConstNames {
 	const gameMoveRight = "Game::MoveRight";
 	const gameMoveDown = "Game::MoveDown";
 	const gameMoveLeft = "Game::MoveLeft";
+
+	//css
+	const buttonWrapper = "ButtonWrapper";
+	const upperButton = "UpperButton";
+	const lowerButtons = "LowerButtons";
 
 	//pages
 	const registerURL = "/?register";

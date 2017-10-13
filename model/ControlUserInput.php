@@ -10,10 +10,19 @@ class ControlUserInput {
         $this->databaseHandler = new DatabaseHandler();
     }
 
+    /**
+    * returns message accumulated during runtime
+    */
     public function getControlledMessage() {
         return $this->controlResult;
     }
 
+    /**
+    * This does TWO things!
+    * First, it controls parameter variables
+    * Second, it controls authentication to database
+    * @return boolean, true if succesfull result from database, false if not
+    */
     public function controlLoginInput($name, $password) {
         $message = "";
         //controls the inputs filled in
@@ -23,6 +32,7 @@ class ControlUserInput {
         else if($password === "") {
             $message = "Password is missing";
         }
+        //attempts authenticate to database
         else if($this->databaseHandler->attemptAuthenticate($name, $password)) {
             $message = "Welcome";
             $this->controlResult = $message;
@@ -37,6 +47,12 @@ class ControlUserInput {
         return false;
     }
 
+    /**
+    * This does TWO things!
+    * First, it controls parameter variables
+    * Second, it controls username to database
+    * @return boolean, true if no username exists, false if it does
+    */
     public function controlRegisterInput($name, $password, $passwordRepeat) {
         $message = "";
 
@@ -78,7 +94,8 @@ class ControlUserInput {
     }
 
     /**
-    * Controls post with given id if string with bad characters
+    * Controls parameter for invalid
+    * @return boolean, return true if valid string
     */
     private function controlString($string) {
         $newString = filter_var($string, FILTER_SANITIZE_STRING);

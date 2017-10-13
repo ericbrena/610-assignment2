@@ -39,6 +39,9 @@ class MainController {
         $this->gameView = new GameView();
     }
 
+    /**
+    * Handles all the request given from user
+    */
     public function handleRequest() {
         $this->handleLogout();
         $this->handleLogin();
@@ -46,8 +49,13 @@ class MainController {
         $this->handleGameInput();
     }
     
+    /**
+    * Will return HTML string based on users logged in status OR url
+    */
     public function getHTML() {
         $userIsLoggedIn = $this->getLoggedInStatus();
+
+        //get message from the result of users inputs
         $userMessage = $this->controlUserInput->getControlledMessage();
         $userRequestRegisterPage = $this->requestHandler->requestRegisterPage();
         $HTML;
@@ -59,9 +67,9 @@ class MainController {
             //if a game is active generate appropriate game html
             if($this->sessionHandler->controlSessionBoolean(ConstNames::gameActive) === true) {
                 $gameBoard = $this->sessionHandler->getInfo(ConstNames::gameBoard);
-                $userLost = $this->gameLogic->controlGameOver($gameBoard);
+                $gameNotOver = $this->gameLogic->controlGameOver($gameBoard);
 
-                $HTML .= $this->gameView->generateGameHTML($gameBoard, $userLost);
+                $HTML .= $this->gameView->generateGameHTML($gameBoard, $gameNotOver);
             }
         }
         //if register url sent, generate registration html
@@ -83,21 +91,27 @@ class MainController {
 
     private function handleLogout() {
         $userAttemptedLogout = $this->requestHandler->controlRequest(ConstNames::logout);
+
         if($this->getLoggedInStatus() && $userAttemptedLogout === true) {
-            $this->sessionHandler->logout();
+
+            //sets user logged in status to false and add message "bye!"
+            $this->sessionHandler->saveInfo(ConstNames::isLoggedIn, false);
             $this->controlUserInput->userLoggedOut();
         }
     }
 
     private function handleLogin() {
         $userAttemptedLogin = $this->requestHandler->controlRequest(ConstNames::login);
+
         if($this->getLoggedInStatus() === false && $userAttemptedLogin === true) {
             $name = $this->requestHandler->getPostRequest(ConstNames::name);
             $password = $this->requestHandler->getPostRequest(ConstNames::password);
 
+            //saves username to print if failed login
             $this->sessionHandler->saveInfo(ConstNames::savedName, $name);
             $logInResult = $this->controlUserInput->controlLoginInput($name, $password);
 
+            //set users log in status true
             if($logInResult === true) {
                 $this->sessionHandler->saveInfo(ConstNames::isLoggedIn, true);
             }
@@ -106,14 +120,17 @@ class MainController {
 
     private function handleRegister() {
         $attemptRegister = $this->requestHandler->controlRequest(ConstNames::register);
+
         if($attemptRegister === true) {
             $name = $this->requestHandler->getPostRequest(ConstNames::registerName);
             $password = $this->requestHandler->getPostRequest(ConstNames::registerPassword);
             $repeatPassword = $this->requestHandler->getPostRequest(ConstNames::registerPasswordRepeat);
 
+            //saves username to print if failed register
             $this->sessionHandler->saveInfo(ConstNames::savedRegisteredName, $name);
             $registerResult = $this->controlUserInput->controlRegisterInput($name, $password, $repeatPassword);
 
+            //register users info and change the header to webpages entry site
             if($registerResult === true) {
                 $this->databaseHandler->addRegisterToDatabase($name, $password);
                 $this->sessionHandler->saveInfo(ConstNames::savedName, $name);
@@ -123,17 +140,26 @@ class MainController {
     }
 
     private function handleGameInput() {
+
+        //user needs to be logged in to send requests
         if($this->getLoggedInStatus()) {
-            $this->gameLogic->createNewGame();
+
+            //creates new game if requested
             if($this->requestHandler->controlRequest(ConstNames::newGame) === true) {
+
+                //sets to true for printing the game html
                 $this->sessionHandler->saveInfo(ConstNames::gameActive, true);
+
+                //adds the new game info to session
                 $this->sessionHandler->saveInfo(ConstNames::gameBoard, $this->gameLogic->createNewGame());
             }
             
+            //a game needs to be active in order to get game moves
             if($this->sessionHandler->controlSessionBoolean(ConstNames::gameActive) === true) {
                 $gameBoard = $this->sessionHandler->getInfo(ConstNames::gameBoard);
                 $oldGameBoard = $gameBoard;
                 
+                //changes game board info based on request type
                 if($this->requestHandler->controlRequest(ConstNames::gameMoveUp) === true) {
                     $gameBoard = $this->gameLogic->moveUp($gameBoard);
                 }
@@ -147,7 +173,13 @@ class MainController {
                     $gameBoard = $this->gameLogic->moveLeft($gameBoard);
                 }
                 
-                $gameBoard = $this->gameLogic->generateNewRandomTile($gameBoard);
+                //control if a change has been made from previous move
+                //if so add a new number to game board
+                $boardHasChanged = $this->gameLogic->analyzeBoardChange($oldGameBoard, $gameBoard);
+                if($boardHasChanged === true) {
+                    $gameBoard = $this->gameLogic->generateNewBoard($gameBoard);
+                }
+
                 $this->sessionHandler->saveInfo(ConstNames::gameBoard, $gameBoard);
             }
         }
