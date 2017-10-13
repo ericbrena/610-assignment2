@@ -15,6 +15,7 @@ class GameView {
     
     private function gameHTML($gameBoard) {
         return '
+        <table>
         <tr>
             <td>'. $gameBoard[0][0] .'</td>
             <td>'. $gameBoard[0][1] .'</td>
@@ -39,6 +40,7 @@ class GameView {
             <td>'. $gameBoard[3][2] .'</td>
             <td>'. $gameBoard[3][3] .'</td>
         </tr>
+        </table>
         ';
     }
 

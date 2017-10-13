@@ -132,6 +132,7 @@ class MainController {
             
             if($this->sessionHandler->controlSessionBoolean(ConstNames::gameActive) === true) {
                 $gameBoard = $this->sessionHandler->getInfo(ConstNames::gameBoard);
+                $oldGameBoard = $gameBoard;
                 
                 if($this->requestHandler->controlRequest(ConstNames::gameMoveUp) === true) {
                     $gameBoard = $this->gameLogic->moveUp($gameBoard);
@@ -145,6 +146,8 @@ class MainController {
                 else if($this->requestHandler->controlRequest(ConstNames::gameMoveLeft) === true) {
                     $gameBoard = $this->gameLogic->moveLeft($gameBoard);
                 }
+                
+                $gameBoard = $this->gameLogic->generateNewRandomTile($gameBoard);
                 $this->sessionHandler->saveInfo(ConstNames::gameBoard, $gameBoard);
             }
         }
